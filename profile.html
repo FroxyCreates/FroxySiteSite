@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Froxy Profile Creator</title>
+  <style>
+    body {
+      background-color: #1a1a1a;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .profile-ui {
+      background-color: #2b2b2b;
+      padding: 20px;
+      border-radius: 15px;
+      display: inline-block;
+      margin-top: 20px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+
+    input[type="text"], input[type="file"] {
+      margin: 10px 0;
+      padding: 10px;
+      width: 80%;
+      border-radius: 5px;
+      border: none;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #00b06b;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background-color: #00c77f;
+    }
+
+    .user-display {
+      margin-top: 20px;
+      display: none;
+      text-align: center;
+    }
+
+    .user-display img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-bottom: 10px;
+      border: 2px solid #00b06b;
+    }
+
+    .user-display h2 {
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Create Your Froxy Profile ✨</h1>
+
+  <div class="profile-ui">
+    <input type="text" id="username" placeholder="Enter your username..." />
+    <br>
+    <input type="file" id="pfpUpload" accept="image/*" />
+    <br>
+    <button onclick="showProfile()">Create Profile</button>
+  </div>
+
+  <div class="user-display" id="userDisplay">
+    <img id="pfpPreview" src="" alt="Profile Picture" />
+    <h2 id="displayName">Username</h2>
+  </div>
+
+  <script>
+    function showProfile() {
+      const username = document.getElementById("username").value;
+      const fileInput = document.getElementById("pfpUpload");
+      const displayName = document.getElementById("displayName");
+      const pfpPreview = document.getElementById("pfpPreview");
+      const userDisplay = document.getElementById("userDisplay");
+
+      if (username && fileInput.files[0]) {
+        displayName.textContent = username;
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          pfpPreview.src = e.target.result;
+          userDisplay.style.display = "block";
+        };
+        reader.readAsDataURL(fileInput.files[0]);
+      } else {
+        alert("Please enter a username and upload a profile picture!");
+      }
+    }
+  </script>
+
+</body>
+</html>
