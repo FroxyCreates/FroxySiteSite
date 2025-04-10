@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Froxy's Sonic Game List</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #e0e0e0;
+    }
+
+    header {
+      background-color: #0074BD;
+      color: white;
+      padding: 15px 20px;
+      font-size: 24px;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+
+    header a {
+      color: white;
+      text-decoration: none;
+      background-color: #005f94;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    .container {
+      padding: 20px;
+    }
+
+    .search-bar {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .search-bar input {
+      width: 300px;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #aaa;
+      font-size: 16px;
+    }
+
+    .highlight {
+      margin-bottom: 30px;
+      background-color: #fff;
+      border-left: 8px solid #FFD700;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .highlight h2 {
+      margin-top: 0;
+      color: #DAA520;
+    }
+
+    .game-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+
+    .game-tile {
+      background-color: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+
+    .game-tile:hover {
+      transform: scale(1.05);
+    }
+
+    .thumbnail {
+      height: 120px;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .game-info {
+      padding: 10px;
+    }
+
+    .game-title {
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  🔵 Froxy's Endless Sonic Game List!
+  <a href="index.html">🏠 Home</a>
+</header>
+
+<div class="container">
+  <!-- Game of the Week -->
+  <div class="highlight">
+    <h2>🌟 Game of the Week: Shadow's Revenge</h2>
+    <p>Shadow takes the spotlight in this dark, mysterious adventure. Discover his secrets, and run through the ruins of the Ark to reclaim your past. Chaos Control like never before!</p>
+  </div>
+
+  <!-- Search bar -->
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Search Sonic games..." onkeyup="searchGames()">
+  </div>
+
+  <!-- Game Grid -->
+  <div class="game-list" id="gameList">
+    <!-- Game Tiles -->
+    <div class="game-tile"><div class="thumbnail" style="background-image: url('https://placehold.co/300x120/0074BD/fff?text=Sonic+Dash');"></div><div class="game-info"><div class="game-title">Sonic Dash</div>Mobile speed action!</div></div>
+    <div class="game-tile"><div class="thumbnail" style="background-image: url('https://placehold.co/300x120/1E90FF/fff?text=Sonic+RPG+Legends');"></div><div class="game-info"><div class="game-title">Sonic RPG Legends</div>Turn-based awesomeness!</div></div>
+    <div class="game-tile"><div class="thumbnail" style="background-image: url('https://placehold.co/300x120/4682B4/fff?text=Shadow+Revenge');"></div><div class="game-info"><div class="game-title">Shadow's Revenge</div>The edgiest timeline!</div></div>
+    <div class="game-tile"><div class="thumbnail" style="background-image: url('https://placehold.co/300x120/6495ED/fff?text=Sonic+Adventure+3');"></div><div class="game-info"><div class="game-title">Sonic Adventure 3</div>The dream continues!</div></div>
+    <div class="game-tile"><div class="thumbnail" style="background-image: url('https://placehold.co/300x120/5F9EA0/fff?text=Sonic+Pulse+RP');"></div><div class="game-info"><div class="game-title">Sonic Pulse RP</div>Create your own Sonic AU!</div></div>
+    <div class="game-tile"><div class="thumbnail" style="background-image: url('https://placehold.co/300x120/00BFFF/fff?text=Sonic+Multiverse');"></div><div class="game-info"><div class="game-title">Sonic Multiverse</div>All Sonics, one place!</div></div>
+    <div class="game-tile"><div class="thumbnail" style="background-image: url('https://placehold.co/300x120/4682B4/fff?text=Fleetway+Run');"></div><div class="game-info"><div class="game-title">Fleetway Run</div>Run from the madness!</div></div>
+    <div class="game-tile"><div class="thumbnail" style="background-image: url('https://placehold.co/300x120/4169E1/fff?text=Eggman%27s+Trap');"></div><div class="game-info"><div class="game-title">Eggman's Trap</div>Escape the Death Egg!</div></div>
+    <div class="game-tile"><div class="thumbnail" style="background-image: url('https://placehold.co/300x120/6CA0DC/fff?text=Surge%27s+Rebellion');"></div><div class="game-info"><div class="game-title">Surge's Rebellion</div>Shock the system ⚡</div></div>
+    <div class="game-tile"><div class="thumbnail" style="background-image: url('https://placehold.co/300x120/00CED1/fff?text=Sonic.EXE+Escape');"></div><div class="game-info"><div class="game-title">Sonic.EXE Escape</div>Can you survive...?</div></div>
+
+    <!-- Extra auto-generated games -->
+    <!-- (More tiles for scrolling!) -->
+    <!-- You can always add more later 🌀 -->
+    <!-- Game 11–40 -->
+    ${Array.from({ length: 30 }, (_, i) => `
+      <div class="game-tile">
+        <div class="thumbnail" style="background-image: url('https://placehold.co/300x120/blue/fff?text=Sonic+Game+${i + 11}')"></div>
+        <div class="game-info">
+          <div class="game-title">Sonic Game ${i + 11}</div>
+          A cool adventure awaits!
+        </div>
+      </div>
+    `).join('')}
+  </div>
+</div>
+
+<div class="footer">
+  © 2025 Froxy’s Sonic Shrine~ Not affiliated with SEGA or Roblox.
+</div>
+
+<script>
+  function searchGames() {
+    const input = document.getElementById("searchInput");
+    const filter = input.value.toLowerCase();
+    const games = document.getElementsByClassName("game-tile");
+
+    for (let i = 0; i < games.length; i++) {
+      const title = games[i].querySelector(".game-title").innerText.toLowerCase();
+      games[i].style.display = title.includes(filter) ? "" : "none";
+    }
+  }
+</script>
+
+</body>
+</html>
