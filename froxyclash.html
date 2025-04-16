@@ -48,6 +48,16 @@
       background-color: #ff6ec7;
       color: #fff;
     }
+    .status {
+      margin-top: 20px;
+      font-size: 1.5em;
+    }
+    .status.online {
+      color: #32cd32;
+    }
+    .status.offline {
+      color: #ff6347;
+    }
   </style>
 </head>
 <body>
@@ -64,9 +74,43 @@
       <li>💀 GTA-Style Deathscreen</li>
       <li>🌐 Java & Bedrock Compatible!</li>
     </ul>
-    <p class="ip">Server IP: <strong>froxyclash.aternos.me</strong></p>
-    <button class="join-btn" onclick="alert('Copy IP: froxyclash.aternos.me')">Join Now!</button>
+    <p class="ip">Server IP: <strong>playfroxyclash.aternos.me</strong></p>
+    <button class="join-btn" onclick="alert('Copy IP: playfroxyclash.aternos.me')">Join Now!</button>
+
+    <div id="serverStatus" class="status">Loading server status...</div>
   </div>
+
+  <script>
+    // Replace with the actual server IP
+    const serverIP = "playfroxyclash.aternos.me";
+
+    // Function to fetch server status using MCStatus API
+    function checkServerStatus() {
+      const url = "https://api.mcsrvstat.us/2/playfroxyclash.aternos.me";
+      
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          if (data.online) {
+            document.getElementById("serverStatus").innerText = "Server is ONLINE!";
+            document.getElementById("serverStatus").classList.add("online");
+            document.getElementById("serverStatus").classList.remove("offline");
+          } else {
+            document.getElementById("serverStatus").innerText = "Server is OFFLINE!";
+            document.getElementById("serverStatus").classList.add("offline");
+            document.getElementById("serverStatus").classList.remove("online");
+          }
+        })
+        .catch(() => {
+          document.getElementById("serverStatus").innerText = "Unable to check server status.";
+          document.getElementById("serverStatus").classList.add("offline");
+          document.getElementById("serverStatus").classList.remove("online");
+        });
+    }
+
+    // Call the function to check the server status when the page loads
+    checkServerStatus();
+  </script>
 
 </body>
 </html>
