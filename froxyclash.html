@@ -1,166 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>FroxyClash Minecraft Server</title>
-  <style>
-    body {
-      background-color: #1e1e2f;
-      color: #fff;
-      font-family: 'Arial', sans-serif;
-      text-align: center;
-      padding: 40px;
-    }
-    h1 {
-      color: #00ffff;
-      font-size: 3em;
-    }
-    .box {
-      background-color: #2a2a3d;
-      border-radius: 12px;
-      padding: 20px;
-      margin: 20px auto;
-      max-width: 600px;
-      box-shadow: 0 0 15px #00ffff70;
-    }
-    .ip {
-      font-size: 1.5em;
-      color: #ff6ec7;
-    }
-    ul {
-      list-style: none;
-      padding: 0;
-    }
-    li {
-      margin: 8px 0;
-    }
-    .join-btn {
-      background-color: #00ffff;
-      color: #1e1e2f;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 8px;
-      font-size: 1.2em;
-      cursor: pointer;
-      margin-top: 20px;
-    }
-    .join-btn:hover {
-      background-color: #ff6ec7;
-      color: #fff;
-    }
-    .status {
-      margin-top: 20px;
-      font-size: 1.5em;
-    }
-    .status.online {
-      color: #32cd32;
-    }
-    .status.offline {
-      color: #ff6347;
-    }
-  </style>
+  <title>Froxy Clash Voting</title>
 </head>
 <body>
-
-  <h1>✨ Welcome to FroxyClash! ✨</h1>
-
-  <div class="box">
-    <h2>🔥 Server Features 🔥</h2>
-    <ul>
-      <li>🪄 Magic & Spells</li>
-      <li>⚡ Epic Powers</li>
-      <li>💎 Item Duplication</li>
-      <li>🛠️ WorldEdit Access</li>
-      <li>💀 GTA-Style Deathscreen</li>
-      <li>🌐 Java & Bedrock Compatible!</li>
-    </ul>
-    <p class="ip">Server IP: <strong>playfroxyclash.aternos.me</strong></p>
-    <button class="join-btn" onclick="alert('Copy IP: playfroxyclash.aternos.me')">Join Now!</button>
-
-    <div id="serverStatus" class="status">Loading server status...</div>
-
-    <!-- Voting Button -->
-    <button class="join-btn" onclick="checkVote('playerUsername')">Vote Now!</button>
-  </div>
+  <h1>Vote Checker</h1>
+  <input type="text" id="playerName" placeholder="Your Minecraft Name">
+  <button id="voteCheckButton">Check Vote</button>
+  <p id="voteResult"></p>
 
   <script>
-    // Define the API URL and your API key
-    const apiUrl = 'https://minecraft-server.net/api/';
-    const apiKey = '29056a7931f1fe4aadc5a1d3d746d955';  // Replace with your API key
-
-    // Function to check if the player has voted
-    function checkVote(playerUsername) {
-      // Construct the POST data for checking the vote
-      const data = {
-        action: 'checkVote',
-        key: apiKey,
-        player: playerUsername,  // Replace with the actual player username
-      };
-
-      // Send the POST request to check if the player has voted
-      fetch(apiUrl, {
-        method: 'POST',  // POST request
-        headers: {
-          'Content-Type': 'application/json',  // Sending JSON data
-        },
-        body: JSON.stringify(data),  // Convert data to JSON
-      })
-      .then(response => response.json())  // Parse JSON response
-      .then(data => {
-        if (data === 0) {
-          alert('Player has not yet voted. Please wait a moment.');
-        } else if (data === 1) {
-          alert('Player has voted! Now marking as claimed...');
-          // If the player has voted, call the next step to mark as claimed
-          setClaimed(playerUsername);
-        } else if (data === 2) {
-          alert('Player has already claimed their reward.');
-        } else {
-          alert('Unexpected response from the server.');
-        }
-      })
-      .catch(error => {
-        console.error('Error checking vote:', error);
-        alert('There was an error checking the vote. Please try again later.');
+    async function checkVote(player) {
+      const response = await fetch('https://froxy-vote-api.repl.co/checkVote', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ player: player })
       });
+
+      const data = await response.json();
+      console.log(data);
+
+      const resultEl = document.getElementById("voteResult");
+
+      if (data.result == "0") {
+        resultEl.innerText = "❌ You haven't voted yet. Try again soon!";
+      } else if (data.result == "1") {
+        resultEl.innerText = "✅ You voted! Claim your reward!";
+      } else if (data.result == "2") {
+        resultEl.innerText = "✔️ Already claimed your reward.";
+      } else {
+        resultEl.innerText = "❓ Unknown response.";
+      }
     }
 
-    // Function to mark the player's vote as claimed
-    function setClaimed(playerUsername) {
-      // Construct the POST data for setting the vote as claimed
-      const data = {
-        action: 'setClaimed',
-        key: apiKey,
-        player: playerUsername,  // Replace with the actual player username
-      };
-
-      // Send the POST request to mark the vote as claimed
-      fetch(apiUrl, {
-        method: 'POST',  // POST request
-        headers: {
-          'Content-Type': 'application/json',  // Sending JSON data
-        },
-        body: JSON.stringify(data),  // Convert data to JSON
-      })
-      .then(response => response.json())  // Parse JSON response
-      .then(data => {
-        // Handle the response based on the API result
-        if (data === 0) {
-          alert('Player has not voted today. Did you handle the first step properly?');
-        } else if (data === 1) {
-          alert('Player\'s vote has already been marked as claimed previously.');
-        } else if (data === 2) {
-          alert('Player\'s vote has been marked as claimed.');
-        } else {
-          alert('Unexpected response from the server.');
-        }
-      })
-      .catch(error => {
-        console.error('Error marking vote as claimed:', error);
-        alert('There was an error marking the vote as claimed. Please try again later.');
-      });
+    document.getElementById("voteCheckButton").onclick = function() {
+      const playerName = document.getElementById("playerName").value;
+      if (playerName.trim() !== "") {
+        checkVote(playerName);
+      } else {
+        alert("Please enter your Minecraft name!");
+      }
     }
   </script>
-
 </body>
 </html>
