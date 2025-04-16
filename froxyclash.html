@@ -78,33 +78,61 @@
     <button class="join-btn" onclick="alert('Copy IP: playfroxyclash.aternos.me')">Join Now!</button>
 
     <div id="serverStatus" class="status">Loading server status...</div>
+    
+    <button class="join-btn" onclick="sendVote()">Vote for Us!</button>  <!-- Added Vote Button -->
   </div>
 
   <script>
-    // Replace with the actual server IP
-    const serverIP = "playfroxyclash.aternos.me";
+    // Minecraft Server Voting API
+    const apiUrl = 'https://minecraft-server.net/api/';
+    const apiKey = '29056a7931f1fe4aadc5a1d3d746d955';
 
-    // Function to fetch server status using MCStatus API
-    function checkServerStatus() {
-      const url = "https://api.mcsrvstat.us/2/playfroxyclash.aternos.me";
-      
-      fetch(url)
+    function sendVote() {
+        const data = {
+            api_key: apiKey,  // Your unique API key
+        };
+
+        fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
         .then(response => response.json())
         .then(data => {
-          if (data.online) {
-            document.getElementById("serverStatus").innerText = "Server is ONLINE!";
-            document.getElementById("serverStatus").classList.add("online");
-            document.getElementById("serverStatus").classList.remove("offline");
-          } else {
-            document.getElementById("serverStatus").innerText = "Server is OFFLINE!";
-            document.getElementById("serverStatus").classList.add("offline");
-            document.getElementById("serverStatus").classList.remove("online");
-          }
+            if (data.success) {
+                alert('Thank you for voting! Your vote was successfully recorded.');
+            } else {
+                alert('Error: Could not record the vote.');
+            }
+        })
+        .catch(error => {
+            alert('Error: Could not connect to the voting API.');
+        });
+    }
+
+    // MCStatus API to check server status
+    function checkServerStatus() {
+        const url = "https://api.mcsrvstat.us/2/playfroxyclash.aternos.me";
+        
+        fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            if (data.online) {
+                document.getElementById("serverStatus").innerText = "Server is ONLINE!";
+                document.getElementById("serverStatus").classList.add("online");
+                document.getElementById("serverStatus").classList.remove("offline");
+            } else {
+                document.getElementById("serverStatus").innerText = "Server is OFFLINE!";
+                document.getElementById("serverStatus").classList.add("offline");
+                document.getElementById("serverStatus").classList.remove("online");
+            }
         })
         .catch(() => {
-          document.getElementById("serverStatus").innerText = "Unable to check server status.";
-          document.getElementById("serverStatus").classList.add("offline");
-          document.getElementById("serverStatus").classList.remove("online");
+            document.getElementById("serverStatus").innerText = "Unable to check server status.";
+            document.getElementById("serverStatus").classList.add("offline");
+            document.getElementById("serverStatus").classList.remove("online");
         });
     }
 
