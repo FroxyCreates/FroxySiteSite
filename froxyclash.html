@@ -78,66 +78,88 @@
     <button class="join-btn" onclick="alert('Copy IP: playfroxyclash.aternos.me')">Join Now!</button>
 
     <div id="serverStatus" class="status">Loading server status...</div>
-    
-    <button class="join-btn" onclick="sendVote()">Vote for Us!</button>  <!-- Added Vote Button -->
+
+    <!-- Voting Button -->
+    <button class="join-btn" onclick="checkVote('playerUsername')">Vote Now!</button>
   </div>
 
   <script>
-    // Minecraft Server Voting API
+    // Define the API URL and your API key
     const apiUrl = 'https://minecraft-server.net/api/';
-    const apiKey = '29056a7931f1fe4aadc5a1d3d746d955';
+    const apiKey = '29056a7931f1fe4aadc5a1d3d746d955';  // Replace with your API key
 
-    function sendVote() {
-        const data = {
-            api_key: apiKey,  // Your unique API key
-        };
+    // Function to check if the player has voted
+    function checkVote(playerUsername) {
+      // Construct the POST data for checking the vote
+      const data = {
+        action: 'checkVote',
+        key: apiKey,
+        player: playerUsername,  // Replace with the actual player username
+      };
 
-        fetch(apiUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Thank you for voting! Your vote was successfully recorded.');
-            } else {
-                alert('Error: Could not record the vote.');
-            }
-        })
-        .catch(error => {
-            alert('Error: Could not connect to the voting API.');
-        });
+      // Send the POST request to check if the player has voted
+      fetch(apiUrl, {
+        method: 'POST',  // POST request
+        headers: {
+          'Content-Type': 'application/json',  // Sending JSON data
+        },
+        body: JSON.stringify(data),  // Convert data to JSON
+      })
+      .then(response => response.json())  // Parse JSON response
+      .then(data => {
+        if (data === 0) {
+          alert('Player has not yet voted. Please wait a moment.');
+        } else if (data === 1) {
+          alert('Player has voted! Now marking as claimed...');
+          // If the player has voted, call the next step to mark as claimed
+          setClaimed(playerUsername);
+        } else if (data === 2) {
+          alert('Player has already claimed their reward.');
+        } else {
+          alert('Unexpected response from the server.');
+        }
+      })
+      .catch(error => {
+        console.error('Error checking vote:', error);
+        alert('There was an error checking the vote. Please try again later.');
+      });
     }
 
-    // MCStatus API to check server status
-    function checkServerStatus() {
-        const url = "https://api.mcsrvstat.us/2/playfroxyclash.aternos.me";
-        
-        fetch(url)
-        .then(response => response.json())
-        .then(data => {
-            if (data.online) {
-                document.getElementById("serverStatus").innerText = "Server is ONLINE!";
-                document.getElementById("serverStatus").classList.add("online");
-                document.getElementById("serverStatus").classList.remove("offline");
-            } else {
-                document.getElementById("serverStatus").innerText = "Server is OFFLINE!";
-                document.getElementById("serverStatus").classList.add("offline");
-                document.getElementById("serverStatus").classList.remove("online");
-            }
-        })
-        .catch(() => {
-            document.getElementById("serverStatus").innerText = "Unable to check server status.";
-            document.getElementById("serverStatus").classList.add("offline");
-            document.getElementById("serverStatus").classList.remove("online");
-        });
-    }
+    // Function to mark the player's vote as claimed
+    function setClaimed(playerUsername) {
+      // Construct the POST data for setting the vote as claimed
+      const data = {
+        action: 'setClaimed',
+        key: apiKey,
+        player: playerUsername,  // Replace with the actual player username
+      };
 
-    // Call the function to check the server status when the page loads
-    checkServerStatus();
+      // Send the POST request to mark the vote as claimed
+      fetch(apiUrl, {
+        method: 'POST',  // POST request
+        headers: {
+          'Content-Type': 'application/json',  // Sending JSON data
+        },
+        body: JSON.stringify(data),  // Convert data to JSON
+      })
+      .then(response => response.json())  // Parse JSON response
+      .then(data => {
+        // Handle the response based on the API result
+        if (data === 0) {
+          alert('Player has not voted today. Did you handle the first step properly?');
+        } else if (data === 1) {
+          alert('Player\'s vote has already been marked as claimed previously.');
+        } else if (data === 2) {
+          alert('Player\'s vote has been marked as claimed.');
+        } else {
+          alert('Unexpected response from the server.');
+        }
+      })
+      .catch(error => {
+        console.error('Error marking vote as claimed:', error);
+        alert('There was an error marking the vote as claimed. Please try again later.');
+      });
+    }
   </script>
 
 </body>
